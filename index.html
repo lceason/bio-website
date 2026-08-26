@@ -4,75 +4,247 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luke Eason | Developer Portfolio</title>
-    <script src="https://tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- JetBrains Mono Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        canvas: '#0d1117',
+                        surface: '#161b22',
+                        borderDark: '#30363d',
+                        textMain: '#c9d1d9',
+                        textMuted: '#8b949e',
+                        accentGreen: '#7ee787',
+                        accentBlue: '#58a6ff',
+                        accentYellow: '#d29922',
+                        accentRed: '#ff7b72',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Retro CRT Scanline Overlay */
+        .crt-scanlines::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.25;
+        }
+
+        /* Terminal Cursor Blink */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor-blink {
+            animation: blink 1s infinite;
+        }
+    </style>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans min-h-screen antialiased selection:bg-teal-500 selection:text-slate-900">
+<body class="crt-scanlines bg-canvas text-textMain font-mono text-sm leading-relaxed min-h-screen p-4 sm:p-8 overflow-x-hidden">
 
-    <div class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+<!-- Interactive Mouse ASCII Canvas -->
+<canvas id="ascii-canvas" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+
+<!-- Main Portfolio Container -->
+<main class="relative z-10 max-w-3xl mx-auto my-0">
+    <div class="bg-surface/90 backdrop-blur-md border border-borderDark rounded-lg shadow-2xl overflow-hidden">
         
-        <header class="border-b border-slate-800 pb-10">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white">Luke Eason</h1>
-                    <p class="text-xl text-teal-400 font-medium mt-2">Digital Project Manager &rarr; Frontend Developer</p>
-                </div>
-                <div class="flex gap-3 text-sm text-slate-400">
-                    <a href="mailto:luke.c.eason@gmail.com" class="hover:text-white transition">Email</a> &bull; 
-                    <span class="text-slate-500">London, UK</span>
-                </div>
+        <!-- IDE Window Title Bar -->
+        <div class="bg-[#12161c] border-b border-borderDark px-4 py-2.5 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
             </div>
-            <p class="text-slate-400 text-lg mt-6 max-w-2xl leading-relaxed">
-                I build clean, user-focused web experiences. Armed with an agency background managing enterprise web builds and recent freeCodeCamp certifications in Responsive Design & JavaScript, I merge architectural oversight with practical, modern frontend code.
-            </p>
-        </header>
+            <div class="text-textMuted text-xs">lukeeason.com &mdash; bash &mdash; 80x24</div>
+        </div>
 
-        <main class="grid md:grid-cols-3 gap-12 mt-12">
+        <!-- Window Body -->
+        <div class="p-5 sm:p-8 space-y-5">
             
-            <div class="space-y-8 md:col-span-1">
-                <div>
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Skills & Stack</h2>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="bg-slate-800 text-teal-300 text-xs font-semibold px-3 py-1.5 rounded-md">HTML5</span>
-                        <span class="bg-slate-800 text-teal-300 text-xs font-semibold px-3 py-1.5 rounded-md">CSS3 / Tailwind</span>
-                        <span class="bg-slate-800 text-teal-300 text-xs font-semibold px-3 py-1.5 rounded-md">JavaScript (ES6)</span>
-                        <span class="bg-slate-800 text-teal-300 text-xs font-semibold px-3 py-1.5 rounded-md">Git / VS Code</span>
-                        <span class="bg-slate-800 text-teal-300 text-xs font-semibold px-3 py-1.5 rounded-md">UX / A/B Testing</span>
-                        <span class="bg-slate-800 text-teal-300 text-xs font-semibold px-3 py-1.5 rounded-md">Agile Delivery</span>
-                    </div>
-                </div>
+            <!-- Terminal Header -->
+            <div>
+                <span class="text-accentGreen">lukeeason@web</span>:<span class="text-accentBlue">~/portfolio</span>$ <span class="text-accentRed">whoami</span>
+            </div>
 
-                <div>
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Certifications</h2>
-                    <ul class="text-sm space-y-2 text-slate-300">
-                        <li><strong class="text-white">JavaScript Algorithms</strong> <br><span class="text-slate-500 text-xs">freeCodeCamp</span></li>
-                        <li><strong class="text-white">Responsive Web Design</strong> <br><span class="text-slate-500 text-xs">freeCodeCamp</span></li>
+            <!-- Title & Typewriter Subtitle -->
+            <div>
+                <h1 class="text-2xl font-bold text-white mt-2">Luke Eason</h1>
+                <div class="text-accentBlue text-base font-medium mb-4 flex items-center min-h-[1.5rem] flex-wrap">
+                    <span id="typewriter"></span>
+                    <span class="cursor-blink text-accentGreen ml-1 font-bold">█</span>
+                </div>
+                <p class="text-textMuted">
+                    I build clean, user-focused web experiences. Armed with an agency background managing enterprise web builds and recent application of HTML, Tailwind CSS, and JavaScript, I merge architectural oversight with practical, modern frontend code.
+                </p>
+            </div>
+
+            <!-- Code Object Block -->
+            <div class="bg-canvas border border-borderDark rounded-md p-5 text-xs sm:text-sm">
+                <span class="text-accentRed">const</span> <span class="text-textMain">developer</span> = {<br>
+                &nbsp;&nbsp;<span class="text-accentBlue">name</span>: <span class="text-accentGreen">'Luke Eason'</span>,<br>
+                &nbsp;&nbsp;<span class="text-accentBlue">transition</span>: <span class="text-accentGreen">'Digital Project Manager &rarr; Frontend Developer'</span>,<br>
+                &nbsp;&nbsp;<span class="text-accentBlue">location</span>: <span class="text-accentGreen">'London, UK'</span>,<br>
+                &nbsp;&nbsp;<span class="text-accentBlue">agileNative</span>: <span class="text-accentRed">true</span><br>
+                };
+            </div>
+
+            <!-- Skills & Stack Section -->
+            <div>
+                <p class="text-textMuted italic">// Skills &amp; Stack</p>
+                <div class="bg-canvas border border-borderDark rounded-md p-5 mt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <ul class="space-y-1.5">
+                        <li class="before:content-['❯_'] before:text-accentGreen">HTML5</li>
+                        <li class="before:content-['❯_'] before:text-accentGreen">CSS3 / Tailwind</li>
+                        <li class="before:content-['❯_'] before:text-accentGreen">JavaScript (ES6)</li>
+                    </ul>
+                    <ul class="space-y-1.5">
+                        <li class="before:content-['❯_'] before:text-accentGreen">Git / VS Code</li>
+                        <li class="before:content-['❯_'] before:text-accentGreen">Python</li>
+                        <li class="before:content-['❯_'] before:text-accentGreen">Project Management</li>
                     </ul>
                 </div>
             </div>
-            <div class="md:col-span-2 space-y-8">
-                <div>
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Why my PM background scales your Dev team</h2>
-                    <div class="space-y-4 text-slate-300 text-sm leading-relaxed">
-                        <p>
-                            <strong class="text-white">Product Empathy:</strong> Having driven end-to-end site launches, I understand how technical debt impacts scopes, budgets, and business KPIs. 
-                        </p>
-                        <p>
-                            <strong class="text-white">Agile Native:</strong> No onboarding needed for sprints. I am fluent in tracking code requests, unblocking pipelines, and translating business goals into component mechanics.
-                        </p>
-                    </div>
-                </div>
-                <div class="pt-4">
-                <a href="mailto:luke.c.eason@gmail.com" class="inline-block bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold py-3 px-6 rounded-lg transition duration-150 active:scale-95 shadow-lg shadow-teal-500/10">
-                Let's Talk Tech
-                </a>
+
+            <div>
+                <p class="text-textMuted italic">// Certifications</p>
+                <div class="bg-canvas border border-borderDark rounded-md p-5 mt-2">
+                    <ul class="space-y-1.5">
+                        <li class="before:content-['❯_'] before:text-accentGreen">Rsponsive Web Design &mdash; <span class="text-accentYellow">freeCodeCamp</span></li>
+                        <li class="before:content-['❯_'] before:text-accentGreen">JavaScript &mdash; <span class="text-accentYellow">freeCodeCamp</span></li>
+                        <li class="before:content-['❯_'] before:text-accentGreen">Frontend Development Libraries &mdash; <span class="text-accentYellow">freeCodeCamp</span></li>
+                        <li class="before:content-['❯_'] before:text-accentGreen">Python &mdash; <span class="text-accentYellow">freeCodeCamp</span></li>
+                    </ul>
                 </div>
             </div>
 
-        </main>
-    </div>
+            <div>
+                <p class="text-textMuted italic">// Why my PM background scales your Dev team</p>
+                <div class="bg-canvas border border-borderDark rounded-md p-5 mt-2">
+                    Having driven end-to-end site launches, I understand how technical debt impacts scopes, budgets, and business KPIs.
+                </div>
+            </div>
 
-    <script src="script.js"></script>
+            <div class="pt-2">
+                <span class="text-accentGreen">lukeeason@web</span>:<span class="text-accentBlue">~/contact</span>$ <span class="text-accentRed">cat</span> ./email.txt
+                <div class="text-white mt-2"><a href="mailto:luke.c.eason@gmail.com">// Email me</a> &bull; London, UK</div>
+            </div>
+
+            <footer class="mt-8 pt-4 border-t border-borderDark text-center text-xs text-slate-500">
+                &copy; Luke Eason &bull; Built with Tailwind CSS
+            </footer>
+
+        </div>
+    </div>
+</main>
+
+<script>
+    /* --- 1. Interactive Mouse ASCII Canvas --- */
+    const canvas = document.getElementById('ascii-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height, cols, rows;
+    const fontSize = 16;
+    const charWidth = fontSize * 0.6;
+    let time = 0;
+
+    // Track mouse coordinates
+    const mouse = { x: -1000, y: -1000, radius: 140 };
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        cols = Math.ceil(width / charWidth);
+        rows = Math.ceil(height / fontSize);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    function animate() {
+        ctx.fillStyle = '#0d1117';
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
+        time += 0.025;
+
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                const charX = c * charWidth;
+                const charY = r * fontSize;
+
+                // Measure distance to cursor
+                const dx = mouse.x - charX;
+                const dy = mouse.y - charY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                let extraAlpha = 0;
+                let mouseOffset = 0;
+
+                // Displace symbols and illuminate when cursor gets near
+                if (dist < mouse.radius) {
+                    const factor = (1 - dist / mouse.radius);
+                    extraAlpha = factor * 0.4;
+                    mouseOffset = factor * -8;
+                }
+
+                const wave = Math.sin(c * 0.08 + r * 0.05 + time);
+                let alpha = (wave + 1) / 2 * 0.16 + 0.02 + extraAlpha;
+                alpha = Math.min(alpha, 0.95);
+
+                const yOffset = Math.sin(c * 0.05 + time) * 3 + mouseOffset;
+
+                // Shift glowing color near mouse
+                ctx.fillStyle = dist < mouse.radius 
+                    ? `rgba(126, 231, 135, ${alpha})` 
+                    : `rgba(126, 231, 135, ${alpha})`;
+                
+                ctx.fillText('#', charX, charY + yOffset);
+            }
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    /* --- 3. Typewriter Subtitle Animation --- */
+    const textToType = "> Digital Project Manager → Frontend Developer | London, UK";
+    let typeIndex = 0;
+    const typewriterEl = document.getElementById('typewriter');
+
+    function typeWriter() {
+        if (typeIndex < textToType.length) {
+            typewriterEl.textContent += textToType.charAt(typeIndex);
+            typeIndex++;
+            setTimeout(typeWriter, 35);
+        }
+    }
+
+    // Delay start slightly for effect on load
+    setTimeout(typeWriter, 300);
+</script>
+
 </body>
 </html>
